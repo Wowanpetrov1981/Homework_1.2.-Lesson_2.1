@@ -1,16 +1,13 @@
-package Transport;
 
 import java.awt.image.Kernel;
 import java.security.Key;
 import java.time.LocalDate;
 
-public class Car {
-    private final String brand;
-    private final String model;
+public class Car extends Transport {
     private double engineVolume;
-    private String color;
-    private final int productionYear;
-    private final String productionCountry;
+    //    private String color;
+//    private final int productionYear;
+//    private final String productionCountry;
     private String gearbox;
     private final String bodyType;
     private String registrationNumber;
@@ -26,6 +23,7 @@ public class Car {
                int productionYear,
                String productionCountry,
                String color,
+               double maximumMovementSpeed,
                double engineVolume,
                String gearbox,
                String bodyType,
@@ -34,16 +32,13 @@ public class Car {
                boolean winterTires,
                Key key,
                Insurance insurance) {
-        this.brand = validationCheck(brand, DEFAULT_STRING_VALUE);
-        this.model = validationCheck(model, DEFAULT_STRING_VALUE);
-        this.productionCountry = validationCheck(productionCountry, DEFAULT_STRING_VALUE);
-        this.productionYear = productionYear > 0 ? productionYear : 2000;
+        super(brand, model, productionYear, productionCountry, color, maximumMovementSpeed);
+
         this.bodyType = validationCheck(bodyType, DEFAULT_STRING_VALUE);
         this.numberOfSeats = numberOfSeats > 0 ? numberOfSeats : 5;
         this.key = key;
         this.insurance = insurance;
         setEngineVolume(engineVolume);
-        setColor(color);
         setGearbox(gearbox);
         setRegistrationNumber(registrationNumber);
         setWinterTires(winterTires);
@@ -82,21 +77,6 @@ public class Car {
         String allowedSymbols = "ABEKМНОРСТУХ";
         return allowedSymbols.contains("" + symbol);
     }
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public int getProductionYear() {
-        return productionYear;
-    }
-
-    public String getProductionCountry() {
-        return productionCountry;
-    }
 
     public String getBodyType() {
         return bodyType;
@@ -112,14 +92,6 @@ public class Car {
 
     public void setEngineVolume(double engineVolume) {
         this.engineVolume = engineVolume > 0.0f ? engineVolume : 1.5f;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = validationCheck(color, "белый");
     }
 
     public String getGearbox() {
@@ -146,13 +118,13 @@ public class Car {
         this.winterTires = winterTires;
     }
 
-    public static String validationCheck(String value, String defaultValue) {
-        if (value == null || value.isEmpty() || value.isBlank()) {
-            return defaultValue;
-        } else {
-            return value;
-        }
-    }
+//    public static String validationCheck(String value, String defaultValue) {
+//        if (value == null || value.isEmpty() || value.isBlank()) {
+//            return defaultValue;
+//        } else {
+//            return value;
+//        }
+//    }
 
     public Key getKey() {
         return key;
@@ -168,16 +140,21 @@ public class Car {
 //    }
     @Override
     public String toString() {
-        return brand + '\''
-                + model + ", "
-                + productionYear + " год выпуска, страна сборки - " + productionCountry + ", цвет - "
-                + color + ", объем двигателя — "
+        return getBrand() + '\''
+                + getModel() + ", "
+                + getProductionYear() + " год выпуска, страна сборки - " + getProductionCountry() + ", цвет - "
+                + getColor() + ", объем двигателя — "
                 + engineVolume + " л., коробка передач - "
-                + gearbox + ", тип кузова"
+                + gearbox + ", тип кузова "
                 + bodyType + ", регистрационный номер"
                 + registrationNumber + ", количество посадочных мест - "
                 + numberOfSeats + ", тип шин "
                 + winterTires;
+    }
+
+    @Override
+    public void refill() {
+        System.out.println("Заправлять бензином, дизелем на заправке или заряжать на специальных электропарковках, если это электрокар");
     }
 
     public static class Key {
